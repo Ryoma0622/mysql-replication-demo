@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  db_master:
+    image: mysql:5.7
+    container_name: mysql_host_master
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    volumes:
+    - ./my-master.cnf:/etc/mysql/conf.d/my.cnf
+    - ./initdb.d:/docker-entrypoint-initdb.d
+    - ./dump:/dump
+    ports:
+    - 3306:3306
+    networks:
+      - app-net
+
+  db_slave1:
+    image: mysql:5.7
+    container_name: mysql_host_slave_1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    volumes:
+    - ./my-slave1.cnf:/etc/mysql/conf.d/my.cnf
+    - ./dump:/dump
+    ports:
+    - 3307:3306
+    networks:
+      - app-net
+
+  db_slave2:
+    image: mysql:5.7
+    container_name: mysql_host_slave_2
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    volumes:
+    - ./my-slave2.cnf:/etc/mysql/conf.d/my.cnf
+    - ./dump:/dump
+    ports:
+    - 3308:3306
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge

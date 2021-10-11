@@ -1,0 +1,11 @@
+[mysqld]
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+server-id=3
+read_only
+relay-log=relay-bin
+replicate-do-db=test
+replicate-do-table=test.hoge_table
+
+[client]
+default-character-set=utf8mb4
