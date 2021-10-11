@@ -15,11 +15,13 @@ MASTER_HOST='mysql_host_master', \
 MASTER_PORT=3306, \
 MASTER_USER='repl', \
 MASTER_PASSWORD='repl', \
-MASTER_LOG_FILE='mysql-bin.000003', \
-MASTER_LOG_POS=595;
+MASTER_LOG_FILE='mysql-bin.xxxxx', \
+MASTER_LOG_POS=xxx;
 
 CREATE USER 'repl'@'%' IDENTIFIED BY 'repl';
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
+
+mysql -uroot -p < /dump/mysql_bkup_dump.sql
 
 mysql -urepl -p -h mysql_host_slave_1 -P 3306
 
@@ -28,12 +30,14 @@ MASTER_HOST='mysql_host_slave_1', \
 MASTER_PORT=3306, \
 MASTER_USER='repl', \
 MASTER_PASSWORD='repl', \
-MASTER_LOG_FILE='mysql-bin.000003', \
-MASTER_LOG_POS=3345371;
+MASTER_LOG_FILE='mysql-bin.xxxx', \
+MASTER_LOG_POS=xxxx;
 
 START SLAVE;
 
 SHOW SLAVE STATUS\G;
+
+## for check
 
 insert into hoge_table (id, name) values ('111', 'aaaa');
 
@@ -47,8 +51,4 @@ truncate fuga_table;
 select * from fuga_table;
 
 insert into fuga_table (id, name) values ('111', 'oooo');
-
-mysql -uroot -p < /dump/mysql_bkup_dump.sql
-
-mysql -urepl -p -P 3306 -h mysql_host_slave_1
 
